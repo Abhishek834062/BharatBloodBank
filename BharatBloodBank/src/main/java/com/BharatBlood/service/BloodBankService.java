@@ -1,8 +1,11 @@
 package com.BharatBlood.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.BharatBlood.dto.BloodBankDto;
+import com.BharatBlood.dto.BloodBankLoginDto;
 import com.BharatBlood.entity.BloodBankEntity;
 import com.BharatBlood.repository.BloodBankRepository;
 
@@ -21,6 +24,25 @@ public class BloodBankService {
 		
 		return toDto(newBloodBankEntity);
 	}
+	
+	public BloodBankDto bloodBankLoginService(BloodBankLoginDto bloodBankLoginDto) {
+	    Optional<BloodBankEntity> optionalUser = bloodBankRepository.findByEmail(bloodBankLoginDto.getEmail());
+
+	    if (optionalUser.isPresent()) {
+	        BloodBankEntity user = optionalUser.get();
+
+
+	        if (user.getPassword().equals(bloodBankLoginDto.getPassword())) {
+	            return toDto(user);
+	        } else {
+	            throw new RuntimeException("Invalid password");
+	        }
+	    } else {
+	        throw new RuntimeException("No user found with this email");
+	    }
+	}
+
+	
 	
 	public BloodBankEntity toEntity(BloodBankDto bloodBankDto)
 	{
