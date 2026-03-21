@@ -71,7 +71,9 @@ public class SecurityConfig {
                     "/auth/register/blood-bank",
                     "/auth/register/doctor",
                     "/auth/forgot-password",
-                    "/auth/reset-password"
+                    "/auth/reset-password",
+                    "/status",
+                    "/health"
                 ).permitAll()
                 // Public inventory view (anyone can see stock)
                 .requestMatchers(HttpMethod.GET, "/inventory/public/**").permitAll()
