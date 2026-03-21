@@ -1,0 +1,13 @@
+target/
+*.jar
+*.war
+*.ear
+*.log
+logs/
+.env
+.idea/
+.vscode/
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
