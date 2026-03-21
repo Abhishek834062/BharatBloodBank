@@ -1,24 +1,17 @@
-# Base image
+# Stage 1: Build
+FROM maven:3.9.2-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-
-# Non-root user
 RUN adduser -D -u 1000 appuser
-
-# Copy local JAR
-COPY target/BharatBloodBank-0.0.1-SNAPSHOT.jar BharatBloodBank-v1.0.jar
-
-# Set ownership
+COPY --from=build /app/target/bharat-blood-bank-1.0.0.jar BharatBloodBank-v1.0.jar
 RUN chown appuser:appuser BharatBloodBank-v1.0.jar
-
-# Switch to non-root user
 USER appuser
-
-# Expose port
 EXPOSE 8080
-
-# Environment
 ENV SPRING_PROFILES_ACTIVE=prod
-
-# Run app
 ENTRYPOINT ["java", "-jar", "BharatBloodBank-v1.0.jar"]
